@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+const fs = require('fs');
 
 class ProductManager {
   constructor(filePath) {
