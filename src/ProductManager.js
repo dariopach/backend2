@@ -1,6 +1,6 @@
-const fs = require('fs');
+import { readFileSync, writeFileSync } from 'node:fs';
 
-class ProductManager {
+export class ProductManager {
   constructor(filePath) {
     this.path = filePath;
     this.products = [];
@@ -60,48 +60,3 @@ class ProductManager {
   }
 }
 
-// Ejemplo de uso
-const manager = new ProductManager('products.json')
-
-// Agrego Productos
-manager.addProduct({
-  title: 'Product 1',
-  description: 'Description of product 1',
-  price: 10,
-  thumbnail: 'ruta/imagen1.jpg',
-  code: 'P1',
-  stock: 5
-})
-
-manager.addProduct({
-  title: 'Product 2',
-  description: 'Description of product 2',
-  price: 15,
-  thumbnail: 'ruta/imagen2.jpg',
-  code: 'P2',
-  stock: 8
-})
-
-// Obtengo todos los productos
-const products = manager.getProducts()
-console.log(products)
-
-// Obtener por id
-const product = manager.getProductById(1)
-console.log(product)
-
-// Actualizar por id
-const updatedProduct = {
-  title: 'Updated Product 1',
-  description: 'Updated description of product 1',
-  price: 20,
-  thumbnail: 'ruta/imagen1_updated.jpg',
-  code: 'P1',
-  stock: 10
-}
-const isUpdated = manager.updateProduct(1, updatedProduct)
-console.log(isUpdated) 
-
-// Borrar por id
-const isDeleted = manager.deleteProduct(2)
-console.log(isDeleted) 
