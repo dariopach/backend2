@@ -26,7 +26,7 @@ productsRouter.get("/", (req, res) => {
 });
 
 productsRouter.get("/:pid", (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     const product = manager.getProductById(productId);
 
     if (product) {
@@ -43,7 +43,7 @@ productsRouter.post("/", (req, res) => {
 });
 
 productsRouter.put("/:pid", (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     const updatedProduct = req.body;
     const result = manager.updateProduct(productId, updatedProduct);
     
@@ -55,7 +55,7 @@ productsRouter.put("/:pid", (req, res) => {
 });
 
 productsRouter.delete("/:pid", (req, res) => {
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     const result = manager.deleteProduct(productId);
     
     if (result) {
