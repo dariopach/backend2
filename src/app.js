@@ -6,7 +6,7 @@ import { ProductManager } from "./ProductManager.js";
 const app = express();
 const PORT = 8080;
 
-const manager = new ProductManager("./productos.json");
+const manager = new ProductManager("src/productos.json");
 
 // Middleware para parsear JSON en el cuerpo de las peticiones
 app.use(express.json());
@@ -73,10 +73,10 @@ const cartsRouter = express.Router();
 cartsRouter.post("/", async (req, res) => {
     const newCart = { id: uuidv4(), products: [] };
     try {
-        const cartsData = await fs.readFile("carrito.json", "utf8");
+        const cartsData = await fs.readFile("src/carrito.json", "utf8");
         const carts = JSON.parse(cartsData);
         carts.push(newCart);
-        await fs.writeFile("carrito.json", JSON.stringify(carts, null, 2));
+        await fs.writeFile("src/carrito.json", JSON.stringify(carts, null, 2));
         res.status(201).json(newCart);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -86,7 +86,7 @@ cartsRouter.post("/", async (req, res) => {
 cartsRouter.get("/:cid", async (req, res) => {
     const cartId = req.params.cid;
     try {
-        const cartsData = await fs.readFile("carrito.json", "utf8");
+        const cartsData = await fs.readFile("src/carrito.json", "utf8");
         const carts = JSON.parse(cartsData);
         const cart = carts.find(c => c.id === cartId);
         if (cart) {
@@ -101,10 +101,10 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 cartsRouter.post("/:cid/product/:pid", async (req, res) => {
     const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const productId = parseInt(req.params.pid);
     const quantity = req.body.quantity || 1;
     try {
-        const cartsData = await fs.readFile("carrito.json", "utf8");
+        const cartsData = await fs.readFile("src/carrito.json", "utf8");
         const carts = JSON.parse(cartsData);
         const cart = carts.find(c => c.id === cartId);
         if (!cart) {
@@ -112,7 +112,7 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
             return;
         }
 
-        const productsData = await fs.readFile("productos.json", "utf8");
+        const productsData = await fs.readFile("src/productos.json", "utf8");
         const products = JSON.parse(productsData);
         const product = products.find(prod => prod.id === productId);
         if (!product) {
@@ -127,7 +127,7 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
             cart.products.push({ product: productId, quantity });
         }
 
-        await fs.writeFile("carrito.json", JSON.stringify(carts, null, 2));
+        await fs.writeFile("src/carrito.json", JSON.stringify(carts, null, 2));
         res.json(cart);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
